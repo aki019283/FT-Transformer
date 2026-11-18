@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/yandex-research/rtdl-revisiting-models",
+  "paper": "https://arxiv.org/abs/2106.11959",
+  "retrieved": "2026-10-24",
+  "revision": "main snapshot, pinned by SHA256; commit unavailable",
+  "sha256": {
+    "bin__ft_transformer.py": "2eddb24549aa322840f1e699b80b3ed9137bba2032592c333ad34998310326b3",
+    "lib__deep.py": "3b4b38f973af5c5df01e9d3aa025bd3efa34ec92d618eb35eb20869ddd64c868",
+    "LICENSE": "bd39fcc730a79d256b14fcdccbfc8ac9f0c7fad4a2e8d01fc513def67980fe35",
+    "README.md": "135752a062113540384b92df3b46c5ed3e41fce8b5f556d8c0a04f338a74a2d7"
+  }
+}

@@ -1,0 +1,90 @@
+schema_version: 1
+experiment:
+  name: mlp-warm_old(58)+history-rcykc-multi(45)
+  factor_name: mlp-warm_old(58)+history-rcykc-multi(45)
+  seed: 42
+data:
+  name: old(58)+history-rcykc-multi(45)
+  path: data/source_data/datasets/old(58)+history-rcykc-multi(45).parquet
+  merge_daily_info_path: "data/source_data/merge_daily_info.parquet"
+  time_col: TradingDate
+  asset_col: Stkcd
+  target_col: r_shift
+  feature_cols: null
+window:
+  train_periods: 48
+  valid_periods: 12
+  test_periods: 1
+  step_periods: 1
+  purge_periods: 1
+  embargo_periods: 0
+  test_start: '2020-01-01'
+  test_end: null
+transforms:
+  dataset:
+  - kind: sanitize
+  - kind: cross_section_rank
+    params:
+      output_range:
+      - -1.0
+      - 1.0
+      rank_target: true
+  window:
+  - kind: impute
+    params:
+      strategy: constant
+      value: 0.0
+model:
+  kind: mlp
+  params:
+    dropout: 0.1
+training:
+  loss:
+    kind: mse
+  optimizer:
+    kind: adamw
+    learning_rate: 0.001
+    weight_decay: 0.0001
+  policy: warm_start
+  full_epochs: 80
+  update_epochs: 10
+  update_learning_rate_scale: 0.25
+  early_stopping_patience: 12
+  early_stopping_min_delta: 1.0e-06
+  periods_per_batch: 8
+  precision: fp32
+  device: auto
+  lr_scheduler: plateau
+  lr_scheduler_patience: 4
+  lr_scheduler_factor: 0.5
+  min_learning_rate: 1.0e-05
+  continue_on_error: false
+tuning:
+  mode: periodic
+  every_periods: 6
+  offset_periods: 0
+  explicit_periods: []
+  initial_trials: 30
+  refresh_trials: 30
+  budgets:
+  - 80
+  periods_per_batch: 8
+  fixed_trial_seed: true
+  search_space:
+    model.dropout:
+      type: float
+      low: 0.0
+      high: 0.25
+    training.optimizer.learning_rate:
+      type: float
+      low: 0.0001
+      high: 0.003
+      log: true
+    training.optimizer.weight_decay:
+      type: float
+      low: 1.0e-06
+      high: 0.001
+      log: true
+artifacts:
+  run_root: data/runs/old(58)+history-rcykc-multi(45)/mlp-warm
+  factor_path: data/factors/old(58)+history-rcykc-multi(45)/mlp-warm/mlp-warm_old(58)+history-rcykc-multi(45).parquet

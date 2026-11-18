@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.parquet
+*.pq
+*.pt
+*.pth
+03_predictions/
+04_results/

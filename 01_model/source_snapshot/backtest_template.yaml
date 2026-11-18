@@ -1,0 +1,48 @@
+data:
+  source_data:
+    adj_close: data/source_data/adj_close.parquet
+    suspension_limit: data/source_data/Suspension_Limit.parquet
+    filter_stock_pool: data/source_data/history-new.pq
+    benchmark_stock_pool: data/source_data/history-1800.pq
+    market_value: data/source_data/mv_turn.parquet
+    index_quotes: data/source_data/指数日行情.parquet
+
+factors:
+  - data/factors/old(116)/mlp/mlp_old(116).parquet
+  - data/factors/old(58)/mlp-warm/mlp-warm_old(58).parquet
+  - data/factors/old(116)+history-new-multi(30)/mlp-warm/mlp-warm_old(116)+history-new-multi(30).parquet
+  - data/factors/old(116)+history-new-sharpe(133)/mlp-warm/mlp-warm_old(116)+history-new-sharpe(133).parquet
+  - data/factors/old(116)+history-rcykc-multi(45)/mlp/mlp_old(116)+history-rcykc-multi(45).parquet
+  - data/factors/old(116)+history-rcykc-sharpe(83)/mlp/mlp_old(116)+history-rcykc-sharpe(83).parquet
+  - data/factors/old(58)+history-new-multi(30)/mlp-warm-ic/mlp-warm-ic_old(58)+history-new-multi(30).parquet
+  - data/factors/old(58)+history-new-sharpe(133)/mlp-warm/mlp-warm_old(58)+history-new-sharpe(133).parquet
+  - data/factors/old(58)+history-rcykc-multi(45)/mlp-warm/mlp-warm_old(58)+history-rcykc-multi(45).parquet
+  - data/factors/old(58)+history-rcykc-sharpe(83)/mlp/mlp_old(58)+history-rcykc-sharpe(83).parquet
+
+output:
+  output_dir: data/backtest_results/mlp
+
+backtest:
+  period:
+    start_date: 2021-01
+    end_date: null
+  frequency: monthly
+  groups: 10
+  neutralize: null
+  risk_free_rate: 0.02
+  transaction_cost:
+    stamp_tax: 0.001
+    commission_buy: 0.0001
+    commission_sell: 0.0001
+    transfer_buy: 0.00001
+    transfer_sell: 0.00001
+
+benchmark:
+  - mode: pool
+    weights: equal
+  - mode: index
+    index_code: "000852"
+
+log:
+  log_file: logs/mlp_backtest.log
+  level: INFO
